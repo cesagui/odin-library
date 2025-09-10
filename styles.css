@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Open Sans';
+}
+
+html, body {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+/* Full viewport grid container */
+.container {
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 6em 1fr 3em;
+  overflow: hidden;
+  background-color: #FFF2EF;
+}
+
+
+
+.header {
+  grid-row: 1;
+  /* background-color: #f0f0f0; */
+  border-bottom: 1px solid #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.header>button{
+    transition: transform 250ms;
+    font-size: 1em;
+    padding: 0.5em 2em;
+    background-color: #5D688A;
+    color: #FFF2EF;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    /* box-shadow: 0px 5px 3px 3px rgba(0, 0, 0, 0.2); */
+}
+
+.header>button:hover {
+    transform: translateY(-6px);
+    box-shadow: 0px 5px 3px 3px rgba(0, 0, 0, 0.2); 
+    /* Increase the shadow to enhance the "lifting" effect */
+    cursor: pointer;
+}
+
+.library {
+  grid-row: 2;
+  overflow: auto;
+}
+
+.library{
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 20px;
+    grid-auto-rows: 12em;
+}
+
+.library>*{
+    padding: 16px;
+    background-color: #FFDBB6;
+    color: #5D688A;
+    font-weight: 600;
+    border-radius: 16px;
+    font-size: 1em;
+    box-shadow: 0px 5px 3px 3px rgba(0, 0, 0, 0.2);
+}
+
+.library>*.read{
+    border-left: 1em solid #F7A5A5;
+}
+.footer {
+  grid-row: 3;
+  color:#5D688A;
+  font-weight: 600;
+  text-align: center;
+}
