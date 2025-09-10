@@ -1,4 +1,4 @@
-const myLibrary = [];
+let myLibrary = [];
 const libraryDiv = document.querySelector('.library');
 
 function Book(title, author, pageCount, read){
@@ -25,6 +25,7 @@ function createNewBookButton(){
     const newBookButton = document.createElement('button');
     newBookButton.id = 'new-book';
     newBookButton.innerHTML = 'NEW BOOK';
+    newBookButton.addEventListener('click', displayForm);
     header.appendChild(newBookButton);
 }
 
@@ -35,26 +36,29 @@ function addBookToLibrary(title, author, pageCount, read){
 
 function displayForm(){
     const headerDiv = document.querySelector('.header');
+    headerDiv.replaceChildren();
     const bookForm = document.createElement('form');
 
     const titleLabel = document.createElement('label');
     titleLabel.setAttribute('for', 'title');
-    titleLabel.innerHTML = 'Title';
+    titleLabel.innerHTML = 'Title:';
     const titleInput = document.createElement('input');
     titleInput.setAttribute('type', 'text');
     titleInput.setAttribute('id', 'title');
     titleInput.setAttribute('name', 'book-title');
+    titleInput.setAttribute('maxlength', '24');
     const titleDiv = document.createElement('div');
     titleDiv.appendChild(titleLabel);
     titleDiv.appendChild(titleInput);
 
     const authorLabel = document.createElement('label');
     authorLabel.setAttribute('for', 'author');
-    authorLabel.innerHTML = 'Author';
+    authorLabel.innerHTML = 'Author:';
     const authorInput = document.createElement('input');
     authorInput.setAttribute('type', 'text');
     authorInput.setAttribute('id', 'author');
     authorInput.setAttribute('name', 'book-author');
+    authorInput.setAttribute('maxlength', '16');
     const authorDiv = document.createElement('div');
     authorDiv.appendChild(authorLabel);
     authorDiv.appendChild(authorInput);
@@ -66,6 +70,7 @@ function displayForm(){
     pageCountInput.setAttribute('type', 'number');
     pageCountInput.setAttribute('id', 'page-count');
     pageCountInput.setAttribute('name', 'book-page-count');
+    pageCountInput.setAttribute('maxlength', '4');
     const pageCountDiv = document.createElement('div');
     pageCountDiv.appendChild(pageCountLabel);
     pageCountDiv.appendChild(pageCountInput);
@@ -107,21 +112,20 @@ function displayForm(){
         } else {
             addBookToLibrary(formValues[0], formValues[1], formValues[2], false);
         }
+        headerDiv.replaceChildren();
+        createNewBookButton();
         displayLibrary();
     });
     headerDiv.appendChild(bookForm);
 }
 
-function createBook(event){
-
-}
 function displayLibrary(){
     libraryDiv.textContent = '';
 
     myLibrary.forEach((book) => {
         const bookDiv = document.createElement('div');
         bookDiv.classList.add('book');
-
+        bookDiv.setAttribute('data-book-id', book.id);
         const titleDiv = document.createElement("div");
         titleDiv.classList.add('title');
         titleDiv.append(book.title);
@@ -137,12 +141,40 @@ function displayLibrary(){
         const removeButton = document.createElement("button");
         removeButton.classList.add('remove-button');
         // removeButton.addEventListener("click", onClick());
-        removeButton.append("X");
-
+        removeButton.append("x");
+        removeButton.addEventListener('click', (event)=>{
+            console.log('event triggered');
+            // retrieve the ID of the book
+            const id = removeButton.parentElement.getAttribute('data-book-id');
+            console.log('book-id: ' + id);
+            // remove that book from the array
+            myLibrary = myLibrary.filter(book => book.id !== id);
+            // re-render library
+            displayLibrary();
+        });
         const readButton = document.createElement("button");
         readButton.classList.add('read-button');
         readButton.append("✓");
-        
+        readButton.addEventListener('click', (event)=>{
+            // retrieve ID
+            const id = readButton.parentElement.getAttribute('data-book-id');
+            // get the current book from library object
+            const found = myLibrary.find(book => book.id === id);
+
+            if (found){
+                found.read = !(found.read);
+                console.log('FOUND');
+            } else {
+                console.log('NOT FOUDND');
+            }
+            myLibrary = myLibrary.map(book => {
+                if (book.id === id){
+                    return found;
+                }
+                return book;
+            })
+            displayLibrary();
+        });
         bookDiv.appendChild(removeButton);
         bookDiv.appendChild(titleDiv);
         bookDiv.appendChild(authorDiv);
@@ -170,7 +202,6 @@ addBookToLibrary("Harry Potter and the Sorcerer's Stone", "J.K. Rowling", 309, f
 addBookToLibrary("The Catcher in the Rye", "J.D. Salinger", 277, true);
 addBookToLibrary("Lord of the Flies", "William Golding", 224, false);
 addBookToLibrary("Jane Eyre", "Charlotte Brontë", 507, false);
-addBookToLibrary("The Chronicles of Narnia: The Lion, the Witch and the Wardrobe", "C.S. Lewis", 206, true);
 addBookToLibrary("Of Mice and Men", "John Steinbeck", 112, false);
 addBookToLibrary("Romeo and Juliet", "William Shakespeare", 96, true);
 addBookToLibrary("The Da Vinci Code", "Dan Brown", 454, false);
@@ -180,5 +211,5 @@ addBookToLibrary("The Da Vinci Code", "Dan Brown", 454, false);
 // addBookToLibrary("The Hobbit", "J.R.R. Tolkein", 295, false);
 
 displayLibrary();
-displayForm();
+// displayForm();
 
