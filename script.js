@@ -1,25 +1,43 @@
 let myLibrary = [];
 const libraryDiv = document.querySelector('.library');
 
-function Book(title, author, pageCount, read){
-    if (!new.target){
-        return Error("Please use the new keyword when instantiating this Page Object");
-    }
-    this.title = title;
-    this.author = author;
-    this.pageCount = pageCount;
-    this.read = read;
-    this.readString = 'not read yet.';
-    this.id = crypto.randomUUID();
+// function Book(title, author, pageCount, read){
+//     if (!new.target){
+//         return Error("Please use the new keyword when instantiating this Page Object");
+//     }
+//     this.title = title;
+//     this.author = author;
+//     this.pageCount = pageCount;
+//     this.read = read;
+//     this.readString = 'not read yet.';
+//     this.id = crypto.randomUUID();
     
-    this.info = function(){
-        if (read){
-            this.readString = 'read already.';
-        }
-        return (title + " by " + author + ", " + pageCount + " pages, " + this.readString);
+//     this.info = function(){
+//         if (read){
+//             this.readString = 'read already.';
+//         }
+//         return (title + " by " + author + ", " + pageCount + " pages, " + this.readString);
+//     }
+// }
+class Book {
+    constructor(title, author, pageCount, read){
+        this.title = title;
+        this.author = author;
+        this.pageCount = pageCount;
+        this.read = read;
+        this.readString = 'not read yet';
+        this.id = crypto.randomUUID();
     }
-}
 
+    info(){
+        if (read){
+            this.readString = 'read already.'
+        }
+
+        return (this.title + " by " + this.author + ", " + this.pageCount + " pages, " + this.readString);
+    }
+
+}
 function createNewBookButton(){
     const header = document.querySelector('.header');
     const newBookButton = document.createElement('button');
